@@ -4,9 +4,9 @@ services:
     networks:
       - caddy
     volumes:
-      - ./config:/config
-      - ../media/movies:/movies
-      - ../media/downloads:/downloads
+      - /plex/radarr/config:/config
+      - /plex/media/movies:/movies
+      - /plex/media/downloads:/downloads
     restart: unless-stopped
     environment:
       - PUID=1000

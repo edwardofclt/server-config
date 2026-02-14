@@ -1,10 +1,19 @@
 #!/bin/bash
+#!/bin/bash
+set -exuo pipefail
 
-# Stop stacks in reverse order, only one level deep
-find /plex -mindepth 2 -maxdepth 2 -type f \( -name "docker-compose.yml" -o -name "docker-compose.yaml" \) | tac | while read -r compose_file; do
-    dir=$(dirname "$compose_file")
-    echo "Stopping Docker Compose in $dir"
-    (cd "$dir" && docker compose down)
-done
+DOMAIN=edwardofclt.com
+export DOMAIN
 
-docker compose down
+base="/plex"
+base_compose="$base/docker-compose.yml"
+
+args=(-f "$base_compose")
+
+while IFS= read -r compose_file; do
+  args+=(-f "$compose_file")
+done < <(find "$base" -mindepth 2 -maxdepth 2 -type f \( -name "docker-compose.yml" -o -name "docker-compose.yaml" \) -print)
+
+# Run from /plex so relative paths in compose files behave as expected
+cd "$base"
+docker compose "${args[@]}" down

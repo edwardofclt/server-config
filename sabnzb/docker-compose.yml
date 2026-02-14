@@ -6,9 +6,9 @@ services:
       - PGID=1000
       - TZ=America/New_York
     volumes:
-      - ./config:/config
-      - ../media/downloads:/downloads
-      - ../media/incomplete:/incomplete-downloads
+      - /plex/sabnzb/config:/config
+      - /plex/media/downloads:/downloads
+      - /plex/media/incomplete:/incomplete-downloads
     restart: unless-stopped
     networks:
       - caddy

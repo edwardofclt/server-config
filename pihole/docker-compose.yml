@@ -6,12 +6,13 @@ services:
       # DNS Ports
       - "53:53/tcp"
       - "53:53/udp"
+      - 8088:80
     environment:
       TZ: 'America/New_York'
       FTLCONF_dns_listeningMode: 'all'
     volumes:
       # For persisting Pi-hole's databases and common configuration file
-      - ./config:/etc/pihole
+      - /plex/pihole/config:/etc/pihole
     networks:
       - caddy
     cap_add:
@@ -37,10 +38,10 @@ services:
     depends_on:
       - pihole
     build:
-      context: ./local-dns-updater
+      context: /plex/pihole/local-dns-updater
       dockerfile: Dockerfile
     env_file:
-      - ./local-dns-updater/.env
+      - /plex/pihole/local-dns-updater/.env
     networks:
       - caddy
     volumes:
